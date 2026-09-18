@@ -31,3 +31,4 @@ dist
 
 # 대용량 파일 제외 (GitHub 100MB 제한 초과)
 02.answer-code/04.volumes/db-data/
+**/.generated

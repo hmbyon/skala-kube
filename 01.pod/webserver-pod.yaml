@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sk152-webserver
+  namespace: class-5
+  labels:
+    app: sk152-webserver
+spec:
+  containers:
+  - name: webserver
+    image: skala-registry.skala-ai.com/class-5/sk152-webserver:1.0 
+    imagePullPolicy: Always
+    env:
+    - name: USER_NAME
+      value: sk152
+    - name: CLASS_NAME
+      value: class-5

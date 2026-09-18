@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sk152-myfirst-api-server
+  namespace: class-5
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sk152-myfirst-api-server
+  template:
+    metadata:
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '8080'
+        prometheus.io/path: '/actuator/prometheus'
+        update: 9203dfd7
+      labels:
+        app: sk152-myfirst-api-server
+    spec:
+      serviceAccountName: default
+      containers:
+      - name: webserver
+        image: skala-registry.skala-ai.com/class-5/sk152-webserver:1.0
+        imagePullPolicy: Always
+        env:
+        - name: USER_NAME
+          value: sk152
+        - name: NAMESPACE
+          value: class-5
+        - name: SPRING_PROFILES_ACTIVE
+          value: "prod"
+        livenessProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          failureThreshold: 3
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          failureThreshold: 3
+          timeoutSeconds: 5
+
